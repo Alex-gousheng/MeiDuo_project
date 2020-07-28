@@ -55,8 +55,8 @@ ROOT_URLCONF = 'meiduo_mall.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'BACKEND': 'django.template.backends.jinja2.Jinja2',
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'environment':'meiduo_mall.utils.jinja2_env.jinja2_environment'
         },
     },
 ]
@@ -77,11 +78,34 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'meiduo_mall',
+        'HOST':'192.168.239.128',
+        'PORT':3306,
+        'USER':'zgg',
+        'PASSWORD':'45032427',
+
     }
 }
-
+# 配置redis数据库
+CACHES = {
+    'default': {
+        'BACKEND':'django_redis.cache.RedisCache',
+        'LOCATION':'redis://192.168.239.128:6379/0',
+        'OPTIONS':{
+            'CLINT_CLASS':'django_redis.client.DefaultClint',
+        }
+    },
+    'session':{
+        'BACKEND':'django_redis.cache.RedisCache',
+        'LOCATION':'redis://192.168.239.128:6379/1',
+        'OPTIONS':{
+            'CLIENT_CLASS':'django_redis.client.DefaultClient',
+        }
+    },
+}
+SESSION_ENGINE = 'django.contrib.session.backends.cache'
+SESSION_CACHE_ALIAS = 'session'
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
