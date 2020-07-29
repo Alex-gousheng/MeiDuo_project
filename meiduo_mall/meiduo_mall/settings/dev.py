@@ -15,8 +15,11 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import sys
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -39,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -65,7 +69,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
-            'environment':'meiduo_mall.utils.jinja2_env.jinja2_environment'
+            'environment': 'meiduo_mall.utils.jinja2_env.jinja2_environment',
         },
     },
 ]
@@ -79,28 +83,28 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'HOST': '192.168.239.128',
+        'PORT': 3306,
+        'USER': 'zgg',
+        'PASSWORD': '45032427',
         'NAME': 'meiduo_mall',
-        'HOST':'192.168.239.128',
-        'PORT':3306,
-        'USER':'zgg',
-        'PASSWORD':'45032427',
 
     }
 }
 # 配置redis数据库
 CACHES = {
     'default': {
-        'BACKEND':'django_redis.cache.RedisCache',
-        'LOCATION':'redis://192.168.239.128:6379/0',
-        'OPTIONS':{
-            'CLINT_CLASS':'django_redis.client.DefaultClint',
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://192.168.239.128:6379/0',
+        'OPTIONS': {
+            'CLINT_CLASS': 'django_redis.client.DefaultClint',
         }
     },
-    'session':{
-        'BACKEND':'django_redis.cache.RedisCache',
-        'LOCATION':'redis://192.168.239.128:6379/1',
-        'OPTIONS':{
-            'CLIENT_CLASS':'django_redis.client.DefaultClient',
+    'session': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://192.168.239.128:6379/1',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     },
 }
@@ -188,3 +192,5 @@ LOGGING = {
         },
     }
 }
+
+AUTH_USER_MODEL = 'users.User'
