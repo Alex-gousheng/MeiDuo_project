@@ -30,7 +30,9 @@ SECRET_KEY = 'fga09@%#ldx^2rpmx82+d@u=bw&$l(ir234+n^44ce6cb(a2$&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.2',
+                 '127.0.0.1',
+                 '192.168.239.128',]
 
 
 # Application definition
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'contents',
 ]
 
 MIDDLEWARE = [
@@ -72,6 +75,20 @@ TEMPLATES = [
             'environment': 'meiduo_mall.utils.jinja2_env.jinja2_environment',
         },
     },
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        ,
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    }
 ]
 
 WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
@@ -93,23 +110,24 @@ DATABASES = {
 }
 # 配置redis数据库
 CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.239.128:6379/0',
-        'OPTIONS': {
-            'CLINT_CLASS': 'django_redis.client.DefaultClint',
-        }
+    "default": { # 默认
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://192.168.239.128:6379/0",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
     },
-    'session': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://192.168.239.128:6379/1',
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+    "session": { # session
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://192.168.239.128:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
 }
-SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
-SESSION_CACHE_ALIAS = 'session'
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "session"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
