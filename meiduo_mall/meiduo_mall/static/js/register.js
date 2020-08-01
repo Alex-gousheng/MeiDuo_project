@@ -18,7 +18,8 @@ let vm = new Vue({
         // error_massage
         error_name_message:'',
         error_mobile_message:'',
-    },
+
+
     methods: {
     // 校验用户名
     check_username(){
@@ -29,6 +30,28 @@ let vm = new Vue({
             this.error_name_message = '请输入5-20个字符的用户名';
             this.error_name = true;
         }
+                //用户名是否存在重复
+        if (this.error_name==false) {
+            let url = '/usernames/'+this.username+'/count'
+            axios.get('url', '请求头')
+                responseType:'json'
+                .them(response=>{
+                    if (response.data.count==1) {
+                        // 用过户名已存在
+                        this.error_name_message="用户名已存在";
+                        this.error_name = true;
+                    }
+                    else {
+                        // 用户名不存在
+                        this.error_name = false;
+                    }
+                })
+
+                .catch(error=>{
+                    console.log(error.response);
+                })
+        }
+    },
     },
     // 校验密码
     check_password(){

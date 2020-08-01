@@ -7,7 +7,15 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django import http
 import re
+from meiduo_mall.utils.response_code import RETCODE
+
 # Create your views here.
+
+class UsernameCountView(View):
+    def get(self, request, username):
+        count = User.objects.filter(username=username).count()
+        return http.JsonResponse({'code':RETCODE.OK,'errmsg':'OK', 'count': count})
+
 
 
 
@@ -51,11 +59,9 @@ class RegisterView(View):
             user = User.objects.create_user(username=username, password=password, mobile=mobile)
         except DatabaseError:
             return render(request, 'register.html', {'register_errmsg': '注册失败'})
-        # 响应结果
 
-        # return http.HttpResponse('注册成功，重定向到首页')
-        # return redirect()
-
+        # 登入用户，实现状态保持
         login(request, user)
-        return redirect(reverse('contents:index'))
 
+        # 响应注册结果
+        return redirect(reverse('contents:index'))
