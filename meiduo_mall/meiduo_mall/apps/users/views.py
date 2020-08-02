@@ -14,7 +14,7 @@ from meiduo_mall.utils.response_code import RETCODE
 class UsernameCountView(View):
     def get(self, request, username):
         count = User.objects.filter(username=username).count()
-        return http.JsonResponse({'code':RETCODE.OK,'errmsg':'OK', 'count': count})
+        return http.JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'count': count})
 
 
 

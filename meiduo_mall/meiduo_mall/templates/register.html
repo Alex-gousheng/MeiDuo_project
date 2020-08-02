@@ -19,7 +19,7 @@
 		<div class="r_con fr">
 			<div class="reg_title clearfix">
 				<h1>用户注册</h1>
-{#				<a href="login.html">登录</a>#}
+				<a href="login.html">登录</a>
 			</div>
 			<div class="reg_form clearfix">
 				<form method="post" class="register_form" @submit="on_submit" v-cloak>
@@ -47,14 +47,14 @@
 						</li>
 						<li>
 							<label>图形验证码:</label>
-							<input type="text" name="image_code" id="pic_code" class="msg_input">
+							<input type="text" v-model="image_code" @blur="check_image_code" name="image_code" id="pic_code" class="msg_input">
 							<img :src="image_code_url" @click="generate_image_code" alt="图形验证码" class="pic_code">
-							<span class="error_tip">请填写图形验证码</span>
+							<span class="error_tip" v-show="error_image_code">[[ error_image_code_message ]]</span>
 						</li>
 						<li>
 							<label>短信验证码:</label>
 							<input type="text" name="sms_code" id="msg_code" class="msg_input">
-							<a href="javascript:;" class="get_msg_code">获取短信验证码</a>
+							<a @click="send_sms_code" class="get_msg_code">[[ sms_code_tip ]]</a>
 							<span class="error_tip">请填写短信验证码</span>
 						</li>
 						<li class="agreement">
